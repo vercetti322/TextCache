@@ -1,14 +1,26 @@
-import { Heading, Flex, Center, Text } from '@chakra-ui/react';
+/* eslint-disable no-unused-vars */
+import { Heading, Button, Flex, Center, Text } from '@chakra-ui/react';
 import PasteModal from './components/PasteModal';
+import { useState } from 'react';
+import CopyableUrl from './components/CopyableUrl';
 
 function App() {
+  let exportObject = {};
+
+  const [hasObject, setHasObject] = useState(false);
+
   const getPasteObject = (pasteObject) => {
-    console.log(pasteObject);
+    exportObject = pasteObject;
+    setHasObject(true);
   };
-  
+
+  const handleDone = () => {
+    setHasObject(false);
+  };
+
   return (
-    <Flex alignItems="center" flexDirection="column">
-      <Center mt="75px">
+    <Flex alignItems="center" flexDirection="column" my="30px">
+      <Center mt="15px">
         <Heading fontSize="75px">
           Text<span style={{ color: '#008080' }}>cache</span>
         </Heading>
@@ -22,8 +34,25 @@ function App() {
         </Text>
       </Center>
       <Center mt="35px">
-        <PasteModal exportPasteObject={getPasteObject} />
+        <PasteModal
+          exportPasteObject={getPasteObject}
+          homeHasObject={hasObject}
+        />
       </Center>
+      {hasObject && (
+        <div>
+          <Center mt="20px">
+            <Text fontSize="20px" maxWidth="450px" textAlign="center">
+              Your paste is ready! Use the below link to access the cache.
+            </Text>
+          </Center>
+          <Center mt="15px">
+            <CopyableUrl
+              url={`localhost:5173/${typeof exportObject}`}
+            ></CopyableUrl>
+          </Center>
+        </div>
+      )}
     </Flex>
   );
 }

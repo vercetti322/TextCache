@@ -16,7 +16,7 @@ import EncryptModal from './EncryptModal';
 import SmartText from './SmartText';
 import { useState } from 'react';
 
-function PasteModal({ exportPasteObject }) {
+function PasteModal({ exportPasteObject, homeHasObject }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [pinCode, setPinCode] = useState('');
@@ -49,7 +49,7 @@ function PasteModal({ exportPasteObject }) {
 
   return (
     <>
-      <Button variant="solid" colorScheme="teal" size="lg" onClick={onOpen}>
+      <Button variant="solid" isDisabled={homeHasObject} colorScheme="teal" size="lg" onClick={onOpen}>
         Paste your text
       </Button>
       <Modal
@@ -77,6 +77,7 @@ function PasteModal({ exportPasteObject }) {
               variant="solid"
               colorScheme="teal"
               onClick={handleSubmit}
+              isDisabled={code === ''}
             >
               Share
             </Button>
