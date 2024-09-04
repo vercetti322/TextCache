@@ -1,16 +1,19 @@
+/* eslint-disable react/prop-types */
 import { Editor } from '@monaco-editor/react';
 import hljs from 'highlight.js';
 import { useState } from 'react';
 import AlertText from './AlertText';
 
-function SmartText() {
+function SmartText({ passTextToPasteModal }) {
   const [language, setLanguage] = useState('plaintext');
   const [code, setCode] = useState('');
   const alertMessage = `You have exceeded 5000 line count.`;
   const [limitWarning, setLimitWarning] = useState(false);
 
   const detectLanguage = (value) => {
-    setCode(limitLines(value));
+    value = limitLines(value);
+    setCode(value);
+    passTextToPasteModal(value);
     const detectedLang = hljs.highlightAuto(value).language;
     setLanguage(detectedLang || 'plaintext');
   };

@@ -15,7 +15,7 @@ import { LockIcon } from '@chakra-ui/icons';
 import PinField from './PinField';
 import { useState } from 'react';
 
-function EncryptModal({ passPin }) {
+function EncryptModal({ passPinToPasteModal }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [pinOne, setPinOne] = useState('');
 
@@ -36,7 +36,7 @@ function EncryptModal({ passPin }) {
         setUnmatched(true);
       } else {
         setUnmatched(false);
-        passPin(pinOne);
+        passPinToPasteModal(pinOne);
         onClose();
       }
     }
@@ -66,9 +66,9 @@ function EncryptModal({ passPin }) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <PinField onPinChange={handlePinOneChange} />
+            <PinField passPinFromField={handlePinOneChange} />
             <br />
-            <PinField onPinChange={handlePinTwoChange} />
+            <PinField passPinFromField={handlePinTwoChange} />
             {unmatched && <p style={{ color: 'red' }}>PINs do not match!</p>}
           </ModalBody>
 

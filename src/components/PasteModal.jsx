@@ -14,15 +14,39 @@ import {
 import { LinkIcon } from '@chakra-ui/icons';
 import EncryptModal from './EncryptModal';
 import SmartText from './SmartText';
+import { useState } from 'react';
 
-function PasteModal({ passPinHome }) {
+function PasteModal({ exportPasteObject }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handlePin = (pin) => {
-    if (pin !== 'null' && pin.length === 5) {
-      passPinHome(pin);
-    }
+  const [pinCode, setPinCode] = useState('');
+
+  const [protection, setProtection] = useState(false);
+
+  const getPin = (pin) => {
+    setPinCode(pin);
+    setProtection(pin !== 'null');
   };
+
+  const [code, setPasteCode] = useState('');
+
+  const getPasteText = (text) => {
+    setPasteCode(text);
+  };
+
+  const pasteObject = Object.create({
+    protection: protection,
+    pasteText: code,
+    password: pinCode,
+  });
+
+  const handleSubmit = () => {
+    exportPasteObject(pasteObject);
+    setPinCode('');
+    setProtection(false);
+    onClose();
+  };
+
   return (
     <>
       <Button variant="solid" colorScheme="teal" size="lg" onClick={onOpen}>
@@ -45,18 +69,18 @@ function PasteModal({ passPinHome }) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <SmartText />
+            <SmartText passTextToPasteModal={getPasteText} />
           </ModalBody>
           <ModalFooter justifyContent="center" gap="12px">
             <Button
               leftIcon={<LinkIcon />}
               variant="solid"
               colorScheme="teal"
-              onClick={onClose}
+              onClick={handleSubmit}
             >
               Share
             </Button>
-            <EncryptModal passPin={handlePin} />
+            <EncryptModal passPinToPasteModal={getPin} />
           </ModalFooter>
         </ModalContent>
       </Modal>

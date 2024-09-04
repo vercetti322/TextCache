@@ -3,13 +3,13 @@
 import { PinInput, Text, PinInputField, HStack } from '@chakra-ui/react';
 import { useState } from 'react';
 
-function PinField({ onPinChange }) {
+function PinField({ passPinFromField }) {
   const arr = new Array(5).fill(null);
   const [pin, setPin] = useState('');
 
   const handleChange = (value) => {
     setPin(value);
-    onPinChange(value);
+    passPinFromField(value);
   };
   return (
     <div>

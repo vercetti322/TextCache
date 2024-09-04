@@ -1,14 +1,11 @@
 import { Heading, Flex, Center, Text } from '@chakra-ui/react';
 import PasteModal from './components/PasteModal';
-import { useState } from 'react';
 
 function App() {
-  const [showLink, setShowLink] = useState(false);
-  const displayPin = (pin) => {
-    if (pin !== 'null' && pin.length === 5) {
-      setShowLink(true);
-    }
+  const getPasteObject = (pasteObject) => {
+    console.log(pasteObject);
   };
+  
   return (
     <Flex alignItems="center" flexDirection="column">
       <Center mt="75px">
@@ -25,13 +22,8 @@ function App() {
         </Text>
       </Center>
       <Center mt="35px">
-        <PasteModal passPinHome={displayPin} />
+        <PasteModal exportPasteObject={getPasteObject} />
       </Center>
-      {showLink && (
-        <Center mt="25px">
-          <Text>Your link is ready!</Text>
-        </Center>
-      )}
     </Flex>
   );
 }
