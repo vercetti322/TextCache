@@ -12,6 +12,7 @@ function CopyableUrl({ url }) {
         variant="filled"
         width="300px"
         size="md"
+        colorScheme='white'
         flex="1"
         mr="2"
       />
