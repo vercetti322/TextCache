@@ -1,9 +1,33 @@
+/* eslint-disable react/prop-types */
 import CopyableUrl from './CopyableUrl';
-import { Center, Box, Text } from '@chakra-ui/react';
+import {
+  Center,
+  Box,
+  Text,
+  Heading,
+  Spacer,
+  Flex,
+  Button,
+} from '@chakra-ui/react';
 
-function CopyLink() {
+function CopyLink({ onClose }) {
   return (
-    <Box bg="teal.100" height="160px" borderRadius="lg" p="10px">
+    <Box bg="gray.200" mt="30px" height="210px" borderRadius="lg">
+      <Flex direction="row">
+        <Heading as="h3" ml="130px" mt="17px" mb="-3px">
+          Text<span style={{ color: '#008080' }}>cache</span>
+        </Heading>
+        <Spacer />
+        <Button
+          onClick={onClose}
+          mt="10px"
+          mx="10px"
+          colorScheme="teal"
+          height="32px"
+        >
+          x
+        </Button>
+      </Flex>
       <Center mt="20px">
         <Text fontSize="20px" maxWidth="450px" textAlign="center">
           Your paste is ready! Use the below link to access the cache.

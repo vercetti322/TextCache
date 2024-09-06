@@ -21,11 +21,8 @@ function PasteModal({ exportPasteObject, homeHasObject }) {
 
   const [pinCode, setPinCode] = useState('');
 
-  const [protection, setProtection] = useState(false);
-
   const getPin = (pin) => {
     setPinCode(pin);
-    setProtection(pin !== 'null');
   };
 
   const [code, setPasteCode] = useState('');
@@ -35,7 +32,6 @@ function PasteModal({ exportPasteObject, homeHasObject }) {
   };
 
   const pasteObject = Object.create({
-    protection: protection,
     pasteText: code,
     password: pinCode,
   });
@@ -43,7 +39,6 @@ function PasteModal({ exportPasteObject, homeHasObject }) {
   const handleSubmit = () => {
     exportPasteObject(pasteObject);
     setPinCode('');
-    setProtection(false);
     onClose();
   };
 

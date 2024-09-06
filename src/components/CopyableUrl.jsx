@@ -4,15 +4,18 @@ import { CopyIcon, CheckIcon } from '@chakra-ui/icons';
 
 function CopyableUrl({ url }) {
   const { hasCopied, onCopy } = useClipboard(url);
+
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" position="relative">
       <Input
         value={url}
         isReadOnly
         variant="filled"
+        focusBorderColor="teal.500"
         width="300px"
+        fontWeight="bold"
         size="md"
-        colorScheme='white'
+        colorScheme="blackAlpha"
         flex="1"
         mr="2"
       />
@@ -22,6 +25,7 @@ function CopyableUrl({ url }) {
         colorScheme={hasCopied ? 'green' : 'teal'}
         variant="solid"
         size="md"
+        mr="2"
       >
         {hasCopied ? 'Copied' : 'Copy'}
       </Button>

@@ -1,45 +1,42 @@
-/* eslint-disable no-unused-vars */
-import { Heading, Flex, Center, Text, Box, Skeleton } from '@chakra-ui/react';
+import { Heading, Flex, Center, Text } from '@chakra-ui/react';
 import PasteModal from './components/PasteModal';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CopyLink from './components/CopyLink';
-import SkeletonBox from './components/SkeletonBox';
+import { encryptWithPin, decryptWithPin } from './scripts/crypto.js';
 
 function App() {
-  let exportObject = {};
+  let exportObject;
 
   const [hasObject, setHasObject] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // New state to manage skeleton loading
 
   const getPasteObject = (pasteObject) => {
-    exportObject = pasteObject;
+    exportObject = encryptWithPin(
+      pasteObject.pasteText,
+      (pasteObject.password = '9999999')
+    );
+    console.log(exportObject);
+    console.log(
+      decryptWithPin(
+        exportObject.encryptedContent,
+        exportObject.iv,
+        pasteObject.password === '' ? '9999999' : pasteObject.password
+      )
+    );
     setHasObject(true);
-    setIsLoading(true); // Trigger skeleton when hasObject is true
   };
-
-  useEffect(() => {
-    if (hasObject) {
-      const timer = setTimeout(() => {
-        setIsLoading(false); // After 3 seconds, stop showing skeleton
-      }, 3000);
-
-      return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
-    }
-  }, [hasObject]);
 
   const handleDone = () => {
     setHasObject(false);
-    setIsLoading(false);
   };
 
   return (
     <Flex alignItems="center" flexDirection="column" my="30px">
-      <Center mt="15px">
+      <Center mt="10px">
         <Heading fontSize="75px">
           Text<span style={{ color: '#008080' }}>cache</span>
         </Heading>
       </Center>
-      <Center mt="30px">
+      <Center mt="20px">
         <Text fontSize="23px" maxWidth="540px" textAlign="center">
           A simple, secure platform for{' '}
           <span style={{ color: '#006666' }}>caching</span> and{' '}
@@ -47,18 +44,13 @@ function App() {
           ease.
         </Text>
       </Center>
-      <Center mt="35px">
+      <Center mt="25px">
         <PasteModal
           exportPasteObject={getPasteObject}
           homeHasObject={hasObject}
         />
       </Center>
-
-      {hasObject && (
-        <Box mt="30px" width="80%" maxWidth="470px">
-          {isLoading ? <SkeletonBox /> : <CopyLink />}
-        </Box>
-      )}
+      {hasObject && <CopyLink onClose={handleDone} />}
     </Flex>
   );
 }
