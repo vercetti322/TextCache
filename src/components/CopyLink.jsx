@@ -10,9 +10,9 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-function CopyLink({ onClose }) {
+function CopyLink({ onClose, pathUrl }) {
   return (
-    <Box bg="gray.200" mt="30px" height="210px" borderRadius="lg">
+    <Box bg="gray.100" mt="30px" height="210px" borderRadius="lg">
       <Flex direction="row">
         <Heading as="h3" ml="130px" mt="17px" mb="-3px">
           Text<span style={{ color: '#008080' }}>cache</span>
@@ -34,9 +34,7 @@ function CopyLink({ onClose }) {
         </Text>
       </Center>
       <Center mt="15px">
-        <CopyableUrl
-          url={`localhost:5173/${typeof exportObject}`}
-        ></CopyableUrl>
+        <CopyableUrl url={`localhost:5173/${pathUrl}`}></CopyableUrl>
       </Center>
     </Box>
   );

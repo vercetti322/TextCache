@@ -17,6 +17,7 @@
     "@fontsource/poppins": "^5.0.15",
     "@fontsource/roboto": "^5.0.14",
     "@monaco-editor/react": "^4.6.0",
+    "axios": "^1.7.7",
     "crypto-js": "^4.2.0",
     "framer-motion": "^11.3.31",
     "highlight.js": "^11.10.0",

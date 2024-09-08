@@ -2,26 +2,48 @@ import { Heading, Flex, Center, Text } from '@chakra-ui/react';
 import PasteModal from './components/PasteModal';
 import { useState } from 'react';
 import CopyLink from './components/CopyLink';
-import { encryptWithPin, decryptWithPin } from './scripts/crypto.js';
+import { encryptWithPin } from './scripts/crypto.js';
+import axios from 'axios';
 
 function App() {
   let exportObject;
 
   const [hasObject, setHasObject] = useState(false);
 
+  const [pathUrl, setPathUrl] = useState('');
+
   const getPasteObject = (pasteObject) => {
     exportObject = encryptWithPin(
       pasteObject.pasteText,
-      (pasteObject.password = '9999999')
+      pasteObject.password === '' ? '999999' : pasteObject.password
     );
-    console.log(exportObject);
-    console.log(
-      decryptWithPin(
-        exportObject.encryptedContent,
-        exportObject.iv,
-        pasteObject.password === '' ? '9999999' : pasteObject.password
-      )
-    );
+
+    if (pasteObject.password === '') {
+      exportObject.protected = false;
+    } else {
+      exportObject.protected = true;
+    }
+
+    // post the pasteObject JSON to redis
+    const postUrl = 'http://localhost:8080/api/pastes/new';
+
+    axios
+      .post(postUrl, exportObject, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          setPathUrl(response.data);
+        } else {
+          console.error('Unexpected status code:', response.status);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
     setHasObject(true);
   };
 
@@ -50,7 +72,9 @@ function App() {
           homeHasObject={hasObject}
         />
       </Center>
-      {hasObject && <CopyLink onClose={handleDone} />}
+      {hasObject && pathUrl && (
+        <CopyLink onClose={handleDone} pathUrl={pathUrl} />
+      )}
     </Flex>
   );
 }
