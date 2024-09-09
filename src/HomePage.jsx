@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { Heading, Flex, Center, Text } from '@chakra-ui/react';
 import PasteModal from './components/PasteModal.jsx';
@@ -10,7 +9,6 @@ import axios from 'axios';
 
 function HomePage() {
   let exportObject;
-  const url = import.meta.env.VITE_API_URL;
   const [hasObject, setHasObject] = useState(false);
   const [pathUrl, setPathUrl] = useState('');
   const [isBackendAlive, setIsBackendAlive] = useState(false);
@@ -18,7 +16,7 @@ function HomePage() {
 
   const checkBackendStatus = async () => {
     try {
-      const response = await axios.get(`${url}/health`);
+      const response = await axios.get(`https://textcache-backend.onrender.com/health`);
       if (response.status === 200) {
         setIsBackendAlive(true);
       } else {
@@ -55,7 +53,7 @@ function HomePage() {
     exportObject.protected = pasteObject.password !== '';
 
     // Post the pasteObject JSON to the backend
-    const postUrl = `${url}/pastes/new`;
+    const postUrl = `https://textcache-backend.onrender.com/pastes/new`;
 
     axios
       .post(postUrl, exportObject, {

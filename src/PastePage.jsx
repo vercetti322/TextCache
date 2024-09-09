@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,12 +8,12 @@ function PastePage() {
   const { hash } = useParams();
   const [paste, setPaste] = useState(null);
   const [loading, setLoading] = useState(true);
-  const url = import.meta.env.VITE_API_URL;
+  
 
   useEffect(() => {
     const fetchPaste = async () => {
       try {
-        const response = await axios.get(`${url}/api/pastes/${hash}`);
+        const response = await axios.get(`https://textcache-backend.onrender.com/api/pastes/${hash}`);
         setPaste(response.data);
       } catch (error) {
         console.error('Error fetching paste:', error);
