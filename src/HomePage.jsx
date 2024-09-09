@@ -55,7 +55,7 @@ function HomePage() {
     exportObject.protected = pasteObject.password !== '';
 
     // Post the pasteObject JSON to the backend
-    const postUrl = 'http://localhost:8080/api/pastes/new';
+    const postUrl = `${url}/pastes/new`;
 
     axios
       .post(postUrl, exportObject, {
