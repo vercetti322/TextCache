@@ -1,11 +1,11 @@
 import { Heading, Flex, Center, Text } from '@chakra-ui/react';
-import PasteModal from './components/PasteModal';
+import PasteModal from './components/PasteModal.jsx';
 import { useState } from 'react';
-import CopyLink from './components/CopyLink';
+import CopyLink from './components/CopyLink.jsx';
 import { encryptWithPin } from './scripts/crypto.js';
 import axios from 'axios';
 
-function App() {
+function HomePage() {
   let exportObject;
 
   const [hasObject, setHasObject] = useState(false);
@@ -79,4 +79,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;

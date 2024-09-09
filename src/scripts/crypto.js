@@ -13,7 +13,22 @@ export function encryptWithPin(pasteContent, pin) {
 
 // Decryption with PIN
 export function decryptWithPin(encryptedContent, iv, pin) {
-    const key = PBKDF2(pin, 'salt', { keySize: 256 / 32, iterations: 1000 });
-    const decrypted = AES.decrypt(encryptedContent, key, { iv: enc.Hex.parse(iv) });
-    return decrypted.toString(enc.Utf8);
-}
+    try {
+      const key = PBKDF2(pin, 'salt', { keySize: 256 / 32, iterations: 1000 });
+      const decrypted = AES.decrypt(encryptedContent, key, { iv: enc.Hex.parse(iv) });
+      const decryptedText = decrypted.toString(enc.Utf8);
+  
+      if (!isValidDecryptedText(decryptedText)) {
+        throw new Error('Decryption produced invalid data');
+      }
+  
+      return decryptedText;
+    } catch (error) {
+      console.error('Decryption failed:', error.message);
+      return null;
+    }
+  }
+  
+  function isValidDecryptedText(text) {
+    return typeof text === 'string' && text.length > 0;
+  }

@@ -12,7 +12,7 @@ import {
 
 function CopyLink({ onClose, pathUrl }) {
   return (
-    <Box bg="gray.100" mt="30px" height="210px" borderRadius="lg">
+    <Box bg="gray.100" mt="20px" height="210px" borderRadius="lg">
       <Flex direction="row">
         <Heading as="h3" ml="130px" mt="17px" mb="-3px">
           Text<span style={{ color: '#008080' }}>cache</span>

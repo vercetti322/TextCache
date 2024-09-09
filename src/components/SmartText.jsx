@@ -32,7 +32,7 @@ function SmartText({ passTextToPasteModal }) {
   return (
     <>
       <Editor
-        height="250px"
+        height="300px"
         value={code}
         language={language}
         onChange={detectLanguage}
