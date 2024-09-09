@@ -8,7 +8,7 @@ import { encryptWithPin } from './scripts/crypto.js';
 import Footer from './components/Footer.jsx';
 import axios from 'axios';
 
-function HomePage({ baseURL }) {
+function HomePage() {
   let exportObject;
   const url = import.meta.env.VITE_API_URL;
   const [hasObject, setHasObject] = useState(false);

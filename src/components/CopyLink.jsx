@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 function CopyLink({ onClose, pathUrl }) {
+  const baseURL = import.meta.env.REACT_APP_BASE_URL;
   return (
     <Box bg="gray.100" mt="20px" height="210px" borderRadius="lg">
       <Flex direction="row">
@@ -34,7 +35,7 @@ function CopyLink({ onClose, pathUrl }) {
         </Text>
       </Center>
       <Center mt="15px">
-        <CopyableUrl url={`localhost:5173/${pathUrl}`}></CopyableUrl>
+        <CopyableUrl url={`${baseURL}/${pathUrl}`}></CopyableUrl>
       </Center>
     </Box>
   );
