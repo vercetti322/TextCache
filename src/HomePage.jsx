@@ -1,16 +1,50 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { Heading, Flex, Center, Text } from '@chakra-ui/react';
 import PasteModal from './components/PasteModal.jsx';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CopyLink from './components/CopyLink.jsx';
 import { encryptWithPin } from './scripts/crypto.js';
 import Footer from './components/Footer.jsx';
 import axios from 'axios';
 
-function HomePage() {
+function HomePage({ baseURL }) {
   let exportObject;
-
+  const url = import.meta.env.VITE_API_URL;
   const [hasObject, setHasObject] = useState(false);
   const [pathUrl, setPathUrl] = useState('');
+  const [isBackendAlive, setIsBackendAlive] = useState(false);
+  const intervalRef = useRef(null);
+
+  const checkBackendStatus = async () => {
+    try {
+      const response = await axios.get(`${url}/health`);
+      if (response.status === 200) {
+        setIsBackendAlive(true);
+      } else {
+        setIsBackendAlive(false);
+      }
+    } catch (error) {
+      setIsBackendAlive(false);
+    }
+  };
+
+  useEffect(() => {
+    // Initial check
+    checkBackendStatus();
+
+    // Polling interval: check every 30 seconds
+    intervalRef.current = setInterval(() => {
+      checkBackendStatus();
+    }, 7000); // 7 seconds
+
+    // Cleanup on unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
 
   const getPasteObject = (pasteObject) => {
     exportObject = encryptWithPin(
@@ -18,13 +52,9 @@ function HomePage() {
       pasteObject.password === '' ? '999999' : pasteObject.password
     );
 
-    if (pasteObject.password === '') {
-      exportObject.protected = false;
-    } else {
-      exportObject.protected = true;
-    }
+    exportObject.protected = pasteObject.password !== '';
 
-    // post the pasteObject JSON to redis
+    // Post the pasteObject JSON to the backend
     const postUrl = 'http://localhost:8080/api/pastes/new';
 
     axios
@@ -75,6 +105,13 @@ function HomePage() {
         </Center>
         {hasObject && pathUrl && (
           <CopyLink onClose={handleDone} pathUrl={pathUrl} />
+        )}
+        {!isBackendAlive && (
+          <Center mt="25px">
+            <Text fontSize="20px" color="red">
+              Backend is loading! Please wait...
+            </Text>
+          </Center>
         )}
       </Flex>
       <Footer />
