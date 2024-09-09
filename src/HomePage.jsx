@@ -53,7 +53,7 @@ function HomePage() {
     exportObject.protected = pasteObject.password !== '';
 
     // Post the pasteObject JSON to the backend
-    const postUrl = `https://textcache-backend.onrender.com/pastes/new`;
+    const postUrl = `https://textcache-backend.onrender.com/api/pastes/new`;
 
     axios
       .post(postUrl, exportObject, {
