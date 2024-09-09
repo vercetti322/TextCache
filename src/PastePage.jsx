@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { Flex, Center, Heading } from '@chakra-ui/react';
 import PasteViewer from './components/PasteViewer';
@@ -27,22 +27,26 @@ function PastePage() {
   }, [hash]);
 
   if (loading) {
-    return( 
+    return (
       <Center>
         <Heading>Loading..</Heading>
       </Center>
-    )
+    );
+  }
+
+  if (hash.length < 6) {
+    return <Navigate to="/error" replace />;
   }
 
   return (
     <Flex alignItems="center" flexDirection="column" my="30px">
-      <Center mt="20px">
-        <Heading fontSize="60px">
+      <Center mt="10px">
+        <Heading fontSize="50px">
           Text<span style={{ color: '#008080' }}>cache</span>
         </Heading>
       </Center>
       <Center
-        mt="30px"
+        mt="15px"
         boxShadow="0px 0px 10px rgba(0, 0, 0, 0.45)"
         borderRadius={6}
         py="6"

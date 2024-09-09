@@ -3,13 +3,13 @@ import PasteModal from './components/PasteModal.jsx';
 import { useState } from 'react';
 import CopyLink from './components/CopyLink.jsx';
 import { encryptWithPin } from './scripts/crypto.js';
+import Footer from './components/Footer.jsx';
 import axios from 'axios';
 
 function HomePage() {
   let exportObject;
 
   const [hasObject, setHasObject] = useState(false);
-
   const [pathUrl, setPathUrl] = useState('');
 
   const getPasteObject = (pasteObject) => {
@@ -52,29 +52,32 @@ function HomePage() {
   };
 
   return (
-    <Flex alignItems="center" flexDirection="column" my="30px">
-      <Center mt="10px">
-        <Heading fontSize="75px">
-          Text<span style={{ color: '#008080' }}>cache</span>
-        </Heading>
-      </Center>
-      <Center mt="20px">
-        <Text fontSize="23px" maxWidth="540px" textAlign="center">
-          A simple, secure platform for{' '}
-          <span style={{ color: '#006666' }}>caching</span> and{' '}
-          <span style={{ color: '#006666' }}>sharing</span> text snippets with
-          ease.
-        </Text>
-      </Center>
-      <Center mt="25px">
-        <PasteModal
-          exportPasteObject={getPasteObject}
-          homeHasObject={hasObject}
-        />
-      </Center>
-      {hasObject && pathUrl && (
-        <CopyLink onClose={handleDone} pathUrl={pathUrl} />
-      )}
+    <Flex direction="column" minHeight="100vh">
+      <Flex direction="column" flex="1" alignItems="center" my="30px">
+        <Center mt="30px">
+          <Heading fontSize="75px">
+            Text<span style={{ color: '#008080' }}>cache</span>
+          </Heading>
+        </Center>
+        <Center mt="20px">
+          <Text fontSize="23px" maxWidth="540px" textAlign="center">
+            A simple, secure platform for{' '}
+            <span style={{ color: '#006666' }}>caching</span> and{' '}
+            <span style={{ color: '#006666' }}>sharing</span> text snippets with
+            ease.
+          </Text>
+        </Center>
+        <Center mt="25px">
+          <PasteModal
+            exportPasteObject={getPasteObject}
+            homeHasObject={hasObject}
+          />
+        </Center>
+        {hasObject && pathUrl && (
+          <CopyLink onClose={handleDone} pathUrl={pathUrl} />
+        )}
+      </Flex>
+      <Footer />
     </Flex>
   );
 }

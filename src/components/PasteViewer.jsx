@@ -4,7 +4,17 @@ import hljs from 'highlight.js';
 import { useState, useEffect } from 'react';
 import AlertText from './AlertText';
 import { decryptWithPin } from '../scripts/crypto';
-import { PinInput, PinInputField, HStack, Heading, useToast } from '@chakra-ui/react';
+import {
+  PinInput,
+  PinInputField,
+  HStack,
+  Heading,
+  useToast,
+  Button,
+  Flex,
+} from '@chakra-ui/react';
+
+import { CopyIcon, DownloadIcon } from '@chakra-ui/icons';
 
 function PasteViewer({ pasteObject }) {
   const [language, setLanguage] = useState('plaintext');
@@ -25,12 +35,15 @@ function PasteViewer({ pasteObject }) {
           setDecryptionSuccessful(true);
           value = decryptWithPin(value.encryptedContent, value.iv, '999999');
         } else {
-          if (pin.length === 5) { // Ensure PIN is 5 digits
+          if (pin.length === 5) {
+            // Ensure PIN is 5 digits
             value = decryptWithPin(value.encryptedContent, value.iv, pin);
-            if (value === null) { // Assuming empty string means decryption failed
+            if (value === null) {
+              // Assuming empty string means decryption failed
               toast({
                 title: 'PIN Incorrect',
-                description: 'The PIN you entered is incorrect. Please try again.',
+                description:
+                  'The PIN you entered is incorrect. Please try again.',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -79,8 +92,38 @@ function PasteViewer({ pasteObject }) {
     return code;
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    toast({
+      title: 'Code Copied',
+      description: 'The code has been copied to your clipboard.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([code], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'code.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({
+      title: 'Code Downloaded',
+      description: 'The code has been downloaded as a file.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   return (
-    <>
+    <Flex direction="column">
       {!pinClear && (
         <div
           style={{
@@ -109,7 +152,7 @@ function PasteViewer({ pasteObject }) {
       )}
       {pinClear && decryptionSuccessful && (
         <Editor
-          height="320px"
+          height="305px"
           width="900px"
           key={code}
           value={code}
@@ -125,8 +168,26 @@ function PasteViewer({ pasteObject }) {
           }}
         />
       )}
+      {pinClear && decryptionSuccessful && (
+        <HStack spacing={4} justify="center" mt={3}>
+          <Button
+            leftIcon={<CopyIcon />}
+            colorScheme="teal"
+            onClick={handleCopy}
+          >
+            Copy
+          </Button>
+          <Button
+            leftIcon={<DownloadIcon />}
+            colorScheme="teal"
+            onClick={handleDownload}
+          >
+            Download
+          </Button>
+        </HStack>
+      )}
       {limitWarning ? <AlertText text={alertMessage} /> : null}
-    </>
+    </Flex>
   );
 }
 

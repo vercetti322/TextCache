@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '@fontsource/poppins';
 import HomePage from './HomePage.jsx';
 import PastePage from './PastePage.jsx';
+import ErrorPage from './ErrorPage.jsx';
 
 const theme = extendTheme({
   fonts: {
@@ -21,6 +22,8 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/:hash" element={<PastePage />} />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>
     </ChakraProvider>
