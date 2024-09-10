@@ -34,7 +34,7 @@ function HomePage() {
     // Polling interval: check every 30 seconds
     intervalRef.current = setInterval(() => {
       checkBackendStatus();
-    }, 7000); // 7 seconds
+    }, 15000); // 15 seconds
 
     // Cleanup on unmount
     return () => {
